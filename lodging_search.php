@@ -12,7 +12,7 @@ function build_html_flats( $flats )
 		$flats_html .= sprintf(
 			'<section>
 				<div>
-					<a href="calendar.php">
+					<a href="booking.php">
 						<p>Appartement de %1$s</p>
 						<p>%1$s</p>
 						<p>%2$s</p>
@@ -21,7 +21,7 @@ function build_html_flats( $flats )
 				</div>
 				
 				<div>
-					<img src="/%4$s/" alt="">
+					<img src="pictures/%4$s/" alt="">
 				</div>
 
 			</section>',
