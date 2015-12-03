@@ -1,0 +1,1 @@
+<!-- Home du site avec bouton connexion et inscription -->
