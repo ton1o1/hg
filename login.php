@@ -2,6 +2,12 @@
 // v2.2
 // Formulaire de connexion
 
+// Démarrage de la session
+session_start();
+
+// Si déjà connecté, redirige sur la home
+if(!empty($_SESSION['auth'])){  die( header('Location: ./') ); }
+
 require_once 'inc/pdo.php';
 require_once 'func/keyGenerator.php';
 
@@ -28,9 +34,6 @@ if ( !empty($_POST['login']['submit']) ) {
             // Comparaison du hash (le mot de passe saisi est-il correct ?)
             if ( $passwordHash == $user['password'] ) {
                 
-                // Démarrage de la session
-                session_start();
-
                 // Connexion de l'user (création de la session)
                 $_SESSION['auth'] = $user;
 
@@ -46,17 +49,10 @@ if ( !empty($_POST['login']['submit']) ) {
 } else $error = "Le formulaire n'a pas été correctement validé.";
 
 }
-?>
-<!DOCTYPE html>
-<html>
-<head>
-    <title>H&G | Connexion</title>
-    <meta charset="utf-8">
-</head>
-<body>
-<h1>Connexion</h1>
-<hr>
-<?php
+
+$title = 'Connexion';
+require_once './view/header.php';
+
 // Si on a une erreur à afficher
 if ( !empty($error) ) {
     echo '<h2 style="color:red">'.$error.'</h2>';
@@ -67,5 +63,4 @@ if ( !empty($error) ) {
     <br /><input type="password" placeholder="Mot de passe" name="login[password]" value="<?=!empty($_POST['login']['password']) ? $_POST['login']['password'] : ''?>" required />
     <br /><input type="submit" name="login[submit]" value="Connexion" />
 </form>
-</body>
-</html>
+<?php require_once './view/footer.php'; ?>
