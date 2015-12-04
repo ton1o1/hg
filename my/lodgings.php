@@ -5,28 +5,41 @@
 session_start();
 
 // Si l'user n'est pas connecté on renvoie sur la home
-if(empty($_SESSION['auth'])){  die( header('Location: ./') ); }
+if(empty($_SESSION['auth'])){  die( header('Location: /hg') ); }
 
-$title = 'Mes logements';
-require_once '../view/header.php';
 
 require_once '../inc/pdo.php';
 
-$query = $pdo->prepare("SELECT * FROM lodging, user WHERE lodging.user_id = user.id AND user.id = :id");
+$title = 'Mes logements';
+require_once '../view/header.php';
+?>
+
+<!-- Sous-menu -->
+<a href="../lodging_add.php">Ajouter un logement</a>
+<hr>
+
+<?php
+$query = $pdo->prepare("SELECT * FROM lodging WHERE user_id = :id");
 $query->execute([
 	':id' => $_SESSION['auth']['id']
 ]);
-$lodgings = $query->fetchAll();
 
-echo '<ul>'
+// Si on a des logements à afficher
+if($query->rowCount() > 0){
 
-foreach($lodgings as $lodging){
+	$lodgings = $query->fetchAll();
 
-echo '<li><a href="lodging_view.php?id='.$lodging['id'].'">'.$lodging['address'].' '.$lodging['zipcode'].' '.$lodging['city'].'</a></li>';
+	echo '<ul>';
 
+	foreach($lodgings as $lodging){
+
+	echo '<li><a href="lodging_view.php?id='.$lodging['id'].'">'.$lodging['address'].' '.$lodging['zipcode'].' '.$lodging['city'].'</a></li>';
+
+	}
+
+	echo '</ul>';
 }
-
-echo '</ul>';
+else echo 'Vous n\'avez pas ajouté de logement à louer.';
 
 require_once '../view/footer.php';
 ?>

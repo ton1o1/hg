@@ -5,12 +5,12 @@
 session_start();
 
 // Si l'user n'est pas connecté ou qu'il n'y a pas de logement renseigné, on renvoie sur la home
-if(empty($_SESSION['auth']) || empty($_GET['id'])){  die( header('Location: ./') ); }
+if(empty($_SESSION['auth']) || empty($_GET['id'])){  die( header('Location: /hg') ); }
 
 require_once '../inc/pdo.php';
 
 // Vérification existence du logement
-$query = $pdo->prepare("SELECT COUNT(*) as lodgingFound FROM lodging WHERE user_id = :userId AND id = :lodgingId");
+$query = $pdo->prepare("SELECT * FROM lodging WHERE user_id = :userId AND id = :lodgingId");
 $query->execute([
 	':userId' => $_SESSION['auth']['id'],
 	':lodgingId' => (int) $_GET['id'],
@@ -33,5 +33,5 @@ if($query->rowCount() == 1){
 
 	require_once '../view/footer.php';
 }
-else die( header('Location: ./') );
+else die( header('Location: /hg') );
 ?>
