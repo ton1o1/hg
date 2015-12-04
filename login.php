@@ -1,5 +1,5 @@
 <?php
-// v2.1
+// v2.2
 // Formulaire de connexion
 
 require_once 'inc/pdo.php';
@@ -34,6 +34,9 @@ if ( !empty($_POST['login']['submit']) ) {
                 // Connexion de l'user (création de la session)
                 $_SESSION['auth'] = $user;
 
+                // Redirection sur la home
+                die( header('Location: ./') );
+
             } else $error = "Mauvais identifiants !";
 
         } else $error = "Mauvais identifiants !";
@@ -59,9 +62,9 @@ if ( !empty($error) ) {
 }
 ?>
 <form method="post">
-    <input type="text" placeholder="Email" name="login['email']" value="<?=!empty($_POST['login']['email']) ? $_POST['login']['email'] : ''?>" required />
-    <br /><input type="password" class="password" placeholder="Mot de passe" name="login['password']" value="<?=!empty($_POST['login']['password']) ? $_POST['login']['password'] : ''?>" required />
-    <br /><input type="submit" name="login['submit']" value="Connexion" />
+    <input type="text" placeholder="Email" name="login[email]" value="<?=!empty($_POST['login']['email']) ? $_POST['login']['email'] : ''?>" required />
+    <br /><input type="password" placeholder="Mot de passe" name="login[password]" value="<?=!empty($_POST['login']['password']) ? $_POST['login']['password'] : ''?>" required />
+    <br /><input type="submit" name="login[submit]" value="Connexion" />
 </form>
 </body>
 </html>
