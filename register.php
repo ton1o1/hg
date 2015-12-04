@@ -1,6 +1,6 @@
 <!-- Formulaire d'inscription -->
 <?php
-    // v2.2
+    // v2.3
 	// Changelog: 10:09 04/12/2015 : Ajout de la variable $error
 
 require_once 'inc/pdo.php';
@@ -44,13 +44,14 @@ if ( $_POST ) {
             if ( $user ) {
     			session_start();
 
-                $_POST['auth'] = $user;
-                die( header('Location: ./' . $_POST['register']['type']) );
+                $_SESSION['auth'] = $user;
+                die( header('Location: ./') );
 
             } else $error = "Une erreur de modulation de fréquence binaire est survenue.";
             
-        } else $error = "Le formulaire n'a pas été correctement validé.";
-    }
+        } else $error = "Veuillez renseigner tous les champs !";
+
+    } else $error = "Le formulaire n'a pas été correctement validé.";
 } 
 
 if ( $error ) { ?>
