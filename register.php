@@ -1,16 +1,11 @@
 <!-- Formulaire d'inscription -->
 <?php
-    // v2.0
+    // v2.1
 
 require_once 'inc/pdo.php';
 require_once 'func/keyGenerator.php';
 
 if ( $_POST ) {
-
-    // Sauvegarde temporaire des valeurs saisies par l'utilisateur
-    // foreach($_POST['register'] as $key => $value) {
-    //     $_SESSION['form']['register'][$key] = $value;
-    // }
 
     // Quand le bouton submit est cliqué
     if ( !empty($_POST['register']['submit']) ) {
@@ -18,6 +13,7 @@ if ( $_POST ) {
         if ( !empty($_POST['register']['lastname']) && !empty($_POST['register']['firstname']) && !empty($_POST['register']['email']) && !empty($_POST['register']['password']) ) {
         	// Génération d'un salt
             $salt = keyGenerator();
+            // Mise à jour des données dans la base
             try{
 	            $statement = $pdo->prepare("INSERT INTO user VALUES ('', :password, :salt, :firstname, :lastname, :email, :phone);");
 	            $statement->execute([
@@ -52,7 +48,9 @@ if ( $_POST ) {
             
         } else $error = "Le formulaire n'a pas été correctement validé.";
     }
-} else if ( $error ) { ?>
+} 
+
+if ( $error ) { ?>
 	<h2 style="color: red;"><?=$error?></h2>
 <?php } ?>
 
@@ -65,5 +63,3 @@ if ( $_POST ) {
 	<input type="password" placeholder="Confirmation" name="register[password_confirm]" value="<?=!empty($_POST['register']['password_confirm']) ? $_POST['register']['password_confirm'] : ''?>" required=""/> 
 	<input type="submit" name="register[submit]" value="CREER MON COMPTE"/>
 </form>
-
-<?php } ?>
