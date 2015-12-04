@@ -21,36 +21,40 @@ if ( !empty($_POST['lodging_add']['submit']) ) {
         $query = $pdo->prepare("INSERT INTO lodging VALUES('', :userId, :address, :zipcode, :city, :capacity);");
         $success = $query->execute([
             ':userId' => $_SESSION['auth']['id'],
-            ':address' => $_POST['address'],
-            ':zipcode' => $_POST['zipcode'],
-            ':city' => $_POST['city'],
-            ':capacity' => $_POST['capacity'],
+            ':address' => $_POST['lodging_add']['address'],
+            ':zipcode' => $_POST['lodging_add']['zipcode'],
+            ':city' => $_POST['lodging_add']['city'],
+            ':capacity' => $_POST['lodging_add']['capacity'],
         ]);
 
         if($success){
-			// Si la requête a bien été effectuée, on sauvegarde un message de succès dans la session
+			// Si la requête a bien été effectuée
+
+        	// Récupération de l'id du logement qui vient d'être ajouté
+        	$lodgingId = $pdo->lastInsertId();
+
+	        // Liste des formats de fichier autorisés pour les photos
+	        $allowed =  array('gif', 'png', 'jpg');
+
+	        // Boucle sur toutes les photos uploadées pour les sauvegarder
+	        $nbPictures = count($_FILES['picture']['name']);
+	        for($i=0; $i < $nbPictures; $i++) {
+	    		$filename = $_FILES['picture']['name'][$i];
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+				// S'il s'agit bien d'une image
+				if( in_array($ext, $allowed) ) {
+					$tmp_name = $_FILES['picture']["tmp_name"][$i];
+					// On sauvegarde la photo dans le dossier du logement
+	        		move_uploaded_file($tmp_name, "pictures/$lodgingId/$i.$ext");
+	        		$current++;
+	    		}
+			}
+
+			// On sauvegarde un message de succès dans la session
 			$_SESSION['info'] = 'Votre logement a bien été ajouté.';
 		}
 		else{
 			$_SESSION['info'] = 'Une erreur est survenue !';
-		}
-
-        // Sauvegarde des photos
-        // Liste des formats de fichier autorisés
-        $allowed =  array('gif', 'png', 'jpg');
-		// Numéro initial de la photo
-        $i = 1;
-        // Boucle sur toutes les photos uploadées
-        foreach ($_FILES["picture"] as $picture) {
-    		$filename = $picture['name'];
-			$ext = pathinfo($filename, PATHINFO_EXTENSION);
-			// S'il s'agit bien d'une image
-			if( in_array($ext, $allowed) ) {
-				$tmp_name = $picture["tmp_name"];
-				// On sauvegarde la photo dans le dossier du logement
-        		move_uploaded_file($tmp_name, "pictures/$lodgingId/$i.$ext");
-        		$i++;
-    		}
 		}
 
 		// Retour sur la page de gestion des logements
