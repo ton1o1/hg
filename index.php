@@ -1,11 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<title>H&G | Home</title>
-	<meta charset="utf-8">
-</head>
-<body>
 <?php
+
+$title = 'Accueil';
+require_once './view/header.php';
+
 // Démarrage de la session
 session_start();
 
@@ -31,6 +28,6 @@ else{
 </ul>
 <?php
 }
+
+require_once './view/footer.php';
 ?>
-</body>
-</html>
