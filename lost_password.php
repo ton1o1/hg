@@ -25,7 +25,8 @@ if ( $_POST ) {
 
 $title = "Oubli de mot de passe";
 include('view/header.php'); ?>
-<form action="set_password.php" method="post">
+
+<form method="post">
 
 	<?php if ( $error ) { ?>
 		<h2 style="color: red;"><?=$error?></h2>
