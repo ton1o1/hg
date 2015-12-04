@@ -9,7 +9,6 @@ session_start();
 if(!empty($_SESSION['auth'])){  die( header('Location: ./') ); }
 
 require_once 'inc/pdo.php';
-require_once 'func/keyGenerator.php';
 
 if($_POST){
 
@@ -52,7 +51,13 @@ if ( !empty($_POST['login']['submit']) ) {
 
 $title = 'Connexion';
 require_once './view/header.php';
+?>
 
+<!-- Sous-menu -->
+<a href="lost_password.php">Mot de passe oublié ?</a>
+<hr>
+
+<?php
 // Si on a une erreur à afficher
 if ( !empty($error) ) {
     echo '<h2 style="color:red">'.$error.'</h2>';
