@@ -1,6 +1,7 @@
 <?php
-// v2.2
+// v2.3
 // Formulaire de connexion
+// Changelog: 11:59 04/12/2015 : Ajout du lien lost_password.php
 
 // Démarrage de la session
 session_start();
@@ -63,4 +64,5 @@ if ( !empty($error) ) {
     <br /><input type="password" placeholder="Mot de passe" name="login[password]" value="<?=!empty($_POST['login']['password']) ? $_POST['login']['password'] : ''?>" required />
     <br /><input type="submit" name="login[submit]" value="Connexion" />
 </form>
+<a href="lost_password.php">Mot de passe oublié</a>
 <?php require_once './view/footer.php'; ?>
