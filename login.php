@@ -56,7 +56,7 @@ if ( !empty($error) ) {
 ?>
 <form method="post">
     <input type="text" placeholder="Email" name="login['email']" value="<?=!empty($_POST['login']['email']) ? $_POST['login']['email'] : ''?>" required />
-    <br /><input type="password" class="password" placeholder="Mot de passe" name="login['password']" value="<?=!empty($_SESSION['login']['password']) ? $_SESSION['login']['password'] : ''?>" required />
+    <br /><input type="password" class="password" placeholder="Mot de passe" name="login['password']" value="<?=!empty($_POST['login']['password']) ? $_POST['login']['password'] : ''?>" required />
     <br /><input type="submit" name="login['submit']" value="Connexion" />
 </form>
 </body>
