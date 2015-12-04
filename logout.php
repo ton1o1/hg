@@ -1,1 +1,8 @@
-<!-- Système de déconnexion (unset session) -->
+<?php
+
+session_start();
+unset($_SESSION['auth']);
+
+header('Location: ./');
+
+?>
