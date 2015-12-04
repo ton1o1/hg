@@ -1,6 +1,6 @@
 <?php
-	// set_password
-	// v1.3
+	// set_password.php
+	// v1.4
 
 $pdo = require_once('inc/pdo.php');
 $error="";

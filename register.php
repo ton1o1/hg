@@ -1,6 +1,6 @@
-<!-- Formulaire d'inscription -->
 <?php
-    // v2.5
+	// register.php
+    // v2.6
 	// Changelog: 10:32 04/12/2015 : Ajout meta charset
 	// Changelog: 10:09 04/12/2015 : Ajout de la variable $error
 
@@ -49,9 +49,7 @@ if ( $_POST ) {
                 die( header('Location: ./') );
 
             } else $error = "Une erreur de modulation de fréquence binaire est survenue.";
-            
         } else $error = "Veuillez renseigner tous les champs !";
-
     } else $error = "Le formulaire n'a pas été correctement validé.";
 } 
 
@@ -75,5 +73,5 @@ if ( $error ) { ?>
 	<input type="text"     placeholder="Téléphone"    name="register[phone]"            value="<?=!empty($_POST['register']['phone'])     ? $_POST['register']['phone']     : ''?>" required=""/><br />
 	<input type="password" placeholder="Mot de passe" name="register[password]"         value="<?=!empty($_POST['register']['password'])  ? $_POST['register']['password']  : ''?>" required=""/> <br />
 	<input type="password" placeholder="Confirmation" name="register[password_confirm]" value="<?=!empty($_POST['register']['password_confirm']) ? $_POST['register']['password_confirm'] : ''?>" required=""/> <br />
-	<input type="submit" name="register[submit]" value="CREER MON COMPTE"/>
+	<input type="submit" name="register[submit]" value="Créer un compte"/>
 </form>

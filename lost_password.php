@@ -1,6 +1,6 @@
 <?php
-	// lost_password
-	// v1.1
+	// lost_password.php
+	// v1.2
 
 $pdo = require_once('inc/pdo.php');
 
