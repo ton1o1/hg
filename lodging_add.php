@@ -75,17 +75,13 @@ if ( !empty($error) ) {
     <br /><input type="text" placeholder="Code postal" name="lodging_add[zipcode]" value="<?=!empty($_POST['lodging_add']['zipcode']) ? $_POST['lodging_add']['zipcode'] : ''?>" required />
     <br /><input type="text" placeholder="Ville" name="lodging_add[city]" value="<?=!empty($_POST['lodging_add']['city']) ? $_POST['lodging_add']['city'] : ''?>" required />
     <br /><input type="text" placeholder="Capacité d'accueil" name="lodging_add[capacity]" value="<?=!empty($_POST['lodging_add']['capacity']) ? $_POST['lodging_add']['capacity'] : ''?>" required />
+    <input type="hidden" name="pictureCount" id="pictureCount" value="1" />
+    <br /><br />
     <div id="picturesUpload">
+    	Ajoutez jusqu'à 3 photos :<br />
     	Photo principale : <input name="picture[]" type="file" />
     </div>
     <input type="button" id="addPicture" value="+" />
-    <br /><input type="submit" name="lodging_add[submit]" value="Ajouter" />
+    <br /><br /><input type="submit" name="lodging_add[submit]" value="Sauvegarder le logement" />
 </form>
-<script>
-(function(){
-	$("#addPicture").on("click", function(){
-		$("#picturesUpload").append('<br /><input name="picture[]" type="file" />');
-	});
-});
-</script>
 <?php require_once './view/footer.php'; ?>
