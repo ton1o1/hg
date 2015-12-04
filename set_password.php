@@ -1,5 +1,5 @@
 <?php
-	// v1.3
+	// v1.2
 
 $pdo = require_once('inc/pdo.php');
 $error="";
@@ -14,14 +14,13 @@ if ( $_POST ) {
 	        	// Génération d'un salt
 	            $salt = keyGenerator();
 	            // Mise à jour des données dans la base
-            	try {
+            	try{
 		            $statement = $pdo->prepare("UPDATE user SET password=:password, salt=:salt WHERE user_id=:user_id");
 		            $statement->execute([
 		                ':password'  => hash('sha512', $_POST['user']['password'].$salt),
 		                ':salt'      => $salt,
 					]);
 					$users = $userQuery->fetchAll();
-				}
 	            catch (PDOException $e) {
 			        echo 'Erreur : ' . $e->getMessage();
 			    }

@@ -1,5 +1,5 @@
 <?php
-// v2.4
+// v2.3
 // Formulaire de connexion
 // Changelog: 11:59 04/12/2015 : Ajout du lien lost_password.php
 
@@ -10,6 +10,7 @@ session_start();
 if(!empty($_SESSION['auth'])){  die( header('Location: ./') ); }
 
 require_once 'inc/pdo.php';
+require_once 'func/keyGenerator.php';
 
 if($_POST){
 
