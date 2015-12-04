@@ -1,8 +1,11 @@
 <?php
+// v2.1
 // Formulaire de connexion
 
 require_once 'inc/pdo.php';
 require_once 'func/keyGenerator.php';
+
+if($_POST){
 
 // Le formulaire est-il soumis ?
 if ( !empty($_POST['login']['submit']) ) {
@@ -39,6 +42,7 @@ if ( !empty($_POST['login']['submit']) ) {
 
 } else $error = "Le formulaire n'a pas été correctement validé.";
 
+}
 ?>
 <!DOCTYPE html>
 <html>
