@@ -23,7 +23,7 @@
 	        	if ( !filter_var($_POST['register']['email'], FILTER_VALIDATE_EMAIL) ) {
 
 	        		// L'email entré par l'utilisateur n'est pas valide
-	        		$error = "Vous devez entrer un email valide";
+	        		$error = "Vous devez entrer un email valide.";
 	        	} else {
 
 		        	// Génération d'un salt
@@ -66,7 +66,7 @@
 	                $_SESSION['auth'] = $user;
 	                die( header('Location: ./') );
 
-	            } else $error = "Erreur d'ouverture session.";
+	            } else $error = "Erreur d'ouverture de session.";
 	        } else $error = "Veuillez renseigner tous les champs !";
 	    } else $error = "Le formulaire n'a pas été correctement validé.";
 	}
@@ -81,11 +81,12 @@
 	}
 	// Si on a un message à afficher
 	if ( !empty($succes) ) {
-	    echo '<h2 style="color:greeen">'.$succes.'</h2>';
+	    echo '<h2 style="color:green">'.$succes.'</h2>';
 	}
 ?>
 
-<form method="post" action="register.php">
+<!-- formulaire -->
+<form method="post">
 	<input type="text"     placeholder="Nom"          name="register[lastname]"         value="<?=!empty($_POST['register']['lastname'])  ? $_POST['register']['lastname']  : ''?>" required=""/><br />
 	<input type="text"     placeholder="Prénom"       name="register[firstname]"        value="<?=!empty($_POST['register']['firstname']) ? $_POST['register']['firstname'] : ''?>" required=""/><br />
 	<input type="email"    placeholder="Email"        name="register[email]"            value="<?=!empty($_POST['register']['email'])     ? $_POST['register']['email']     : ''?>" required=""/><br />
