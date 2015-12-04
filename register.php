@@ -1,6 +1,7 @@
 <!-- Formulaire d'inscription -->
 <?php
-    // v2.3
+    // v2.5
+	// Changelog: 10:32 04/12/2015 : Ajout meta charset
 	// Changelog: 10:09 04/12/2015 : Ajout de la variable $error
 
 require_once 'inc/pdo.php';
@@ -58,6 +59,15 @@ if ( $error ) { ?>
 	<h2 style="color: red;"><?=$error?></h2>
 <?php } ?>
 
+<!DOCTYPE html>
+<html>
+<head>
+    <title>H&G | Inscrition</title>
+    <meta charset="utf-8">
+</head>
+<body>
+<h1>Inscrition</h1>
+<hr>
 <form method="post" action="register.php">
 	<input type="text"     placeholder="Nom"          name="register[lastname]"         value="<?=!empty($_POST['register']['lastname'])  ? $_POST['register']['lastname']  : ''?>" required=""/><br />
 	<input type="text"     placeholder="Prénom"       name="register[firstname]"        value="<?=!empty($_POST['register']['firstname']) ? $_POST['register']['firstname'] : ''?>" required=""/><br />
