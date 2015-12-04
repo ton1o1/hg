@@ -1,6 +1,6 @@
 <?php
 	// register.php
-    // v2.8
+    // v2.9
 	// Changelog: 15:25 04/12/2015 : Affichage d'un message en cas de succès de création de compte
 	// Changelog: 15:25 04/12/2015 : Ajout d'une étape de validation d'email
 	// Changelog: 10:32 04/12/2015 : Ajout meta charset
@@ -23,7 +23,7 @@
 	        	if ( !filter_var($_POST['register']['email'], FILTER_VALIDATE_EMAIL) ) {
 
 	        		// L'email entré par l'utilisateur n'est pas valide
-	        		$error = "Vous devez entrer un email valide.";
+	        		$error = "Vous devez entrer un email valide.<br />";
 	        	} else {
 
 		        	// Génération d'un salt
@@ -66,9 +66,9 @@
 	                $_SESSION['auth'] = $user;
 	                die( header('Location: ./') );
 
-	            } else $error = "Erreur d'ouverture de session.";
-	        } else $error = "Veuillez renseigner tous les champs !";
-	    } else $error = "Le formulaire n'a pas été correctement validé.";
+	            } else $error .= "Erreur d'ouverture de session.</br>";
+	        } else $error .= "Veuillez renseigner tous les champs !</br>";
+	    } else $error .= "Le formulaire n'a pas été correctement validé.</br>";
 	}
 
 	// inclusion du header
