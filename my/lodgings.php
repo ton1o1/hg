@@ -12,7 +12,13 @@ require_once '../inc/pdo.php';
 
 $title = 'Mes logements';
 require_once '../view/header.php';
-?>
+
+if(!empty($_SESSION['info'])){ ?>
+
+	<script>alert("<?=$_SESSION['info']?>");</script>
+	<?php unset($_SESSION['info']);
+	
+} ?>
 
 <!-- Sous-menu -->
 <a href="../lodging_add.php">Ajouter un logement</a>
