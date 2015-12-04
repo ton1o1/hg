@@ -3,6 +3,13 @@
 $title = 'Accueil';
 require_once './view/header.php';
 
+if(!empty($_SESSION['info'])){ ?>
+
+	<script>alert("<?=$_SESSION['info']?>");</script>
+	<?php unset($_SESSION['info']);
+	
+}
+
 // L'user est-il connecté ?
 if(!empty($_SESSION['auth'])){
 ?>
