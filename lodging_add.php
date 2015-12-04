@@ -33,6 +33,11 @@ if ( !empty($_POST['lodging_add']['submit']) ) {
         	// Récupération de l'id du logement qui vient d'être ajouté
         	$lodgingId = $pdo->lastInsertId();
 
+        	// Si le dossier pour ce logement n'existe pas, on le crée
+        	if (!is_dir("pictures/$lodgingId")) {
+    			mkdir("pictures/$lodgingId");         
+			} 
+
 	        // Liste des formats de fichier autorisés pour les photos
 	        $allowed =  array('gif', 'png', 'jpg');
 
