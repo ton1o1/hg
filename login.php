@@ -51,6 +51,7 @@ if ( !empty($_POST['login']['submit']) ) {
 <html>
 <head>
     <title>H&G | Connexion</title>
+    <meta charset="utf-8">
 </head>
 <body>
 <h1>Connexion</h1>
