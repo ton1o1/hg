@@ -1,9 +1,12 @@
 <!-- Formulaire d'inscription -->
 <?php
-    // v2.1
+    // v2.2
+	// Changelog: 10:09 04/12/2015 : Ajout de la variable $error
 
 require_once 'inc/pdo.php';
 require_once 'func/keyGenerator.php';
+
+$error = "";
 
 if ( $_POST ) {
 
@@ -55,11 +58,11 @@ if ( $error ) { ?>
 <?php } ?>
 
 <form method="post" action="register.php">
-	<input type="text"     placeholder="Nom"          name="register[lastname]"         value="<?=!empty($_POST['register']['lastname'])  ? $_POST['register']['lastname']  : ''?>" required=""/>
-	<input type="text"     placeholder="Prénom"       name="register[firstname]"        value="<?=!empty($_POST['register']['firstname']) ? $_POST['register']['firstname'] : ''?>" required=""/>
-	<input type="email"    placeholder="Email"        name="register[email]"            value="<?=!empty($_POST['register']['email'])     ? $_POST['register']['email']     : ''?>" required=""/>
-	<input type="text"     placeholder="Téléphone"    name="register[phone]"            value="<?=!empty($_POST['register']['phone'])     ? $_POST['register']['phone']     : ''?>" required=""/>
-	<input type="password" placeholder="Mot de passe" name="register[password]"         value="<?=!empty($_POST['register']['password'])  ? $_POST['register']['password']  : ''?>" required=""/> 
-	<input type="password" placeholder="Confirmation" name="register[password_confirm]" value="<?=!empty($_POST['register']['password_confirm']) ? $_POST['register']['password_confirm'] : ''?>" required=""/> 
+	<input type="text"     placeholder="Nom"          name="register[lastname]"         value="<?=!empty($_POST['register']['lastname'])  ? $_POST['register']['lastname']  : ''?>" required=""/><br />
+	<input type="text"     placeholder="Prénom"       name="register[firstname]"        value="<?=!empty($_POST['register']['firstname']) ? $_POST['register']['firstname'] : ''?>" required=""/><br />
+	<input type="email"    placeholder="Email"        name="register[email]"            value="<?=!empty($_POST['register']['email'])     ? $_POST['register']['email']     : ''?>" required=""/><br />
+	<input type="text"     placeholder="Téléphone"    name="register[phone]"            value="<?=!empty($_POST['register']['phone'])     ? $_POST['register']['phone']     : ''?>" required=""/><br />
+	<input type="password" placeholder="Mot de passe" name="register[password]"         value="<?=!empty($_POST['register']['password'])  ? $_POST['register']['password']  : ''?>" required=""/> <br />
+	<input type="password" placeholder="Confirmation" name="register[password_confirm]" value="<?=!empty($_POST['register']['password_confirm']) ? $_POST['register']['password_confirm'] : ''?>" required=""/> <br />
 	<input type="submit" name="register[submit]" value="CREER MON COMPTE"/>
 </form>
