@@ -43,13 +43,13 @@ if($query->rowCount() > 0){
                     if($_POST['booking']['guests'] > 0 && $_POST['booking']['guests'] <= $lodging['capacity']){
 
                         // Enregistrement de la réservation dans la database
-                        $query = $pdo->prepare("INSERT INTO booking VALUES('', :lodgingId, :userId, :checkin, :checkout, :ngGuests);");
+                        $query = $pdo->prepare("INSERT INTO booking VALUES('', :lodgingId, :userId, :checkin, :checkout, :nbGuests);");
                         $success = $query->execute([
                             ':lodgingId' => $_GET['id'],
                             ':userId' => $_SESSION['auth']['id'],
                             ':checkin' => $_POST['booking']['checkin'],
                             ':checkout' => $_POST['booking']['checkout'],
-                            ':ngGuests' => $_POST['booking']['guests'],
+                            ':nbGuests' => $_POST['booking']['guests'],
                         ]);
 
                         if($success){
