@@ -15,23 +15,71 @@ require_once 'inc/pdo.php';
 
 $query = $pdo->prepare("SELECT * FROM lodging WHERE id = :id");
 $query->execute([
-	':id' => $_GET['id']
+    ':id' => $_GET['id']
 ]);
 
 // Si on a un logement à afficher
 if($query->rowCount() > 0){
 
-	$lodging = $query->fetch();
+    $lodging = $query->fetch();
 
-	$title = 'Réserver ce logement';
-	require_once 'view/header.php';
+    if($_POST){
 
-	if(!empty($_SESSION['info'])){ ?>
+        // Le formulaire est-il soumis ?
+        if ( !empty($_POST['booking']['submit']) ) {
 
-		<script>alert("<?=$_SESSION['info']?>");</script>
-		<?php unset($_SESSION['info']);
-		
-	}
+            // Si le tous les champs du formulaire sont remplis
+            if ( !empty($_POST['booking']['checkin']) && !empty($_POST['booking']['checkout']) && !empty($_POST['booking']['guests']) ) {
+
+                // Vérification des dates fournies
+                $dateCurrent = new DateTime();
+                $dateCurrent->format('Y-m-d');
+                $dateCheckin = new DateTime($_POST['booking']['checkin']);
+                $dateCheckout = new DateTime($_POST['booking']['checkout']);
+
+                if($dateCheckin >= $dateCurrent && $dateCheckout >= $dateCheckin){
+
+                    // Vérification de la capacité d'hébergement du logement
+                    if($_POST['booking']['guests'] > 0 && $_POST['booking']['guests'] <= $lodging['capacity']){
+
+                        // Enregistrement de la réservation dans la database
+                        $query = $pdo->prepare("INSERT INTO booking VALUES('', :lodgingId, :userId, :checkin, :checkout, :ngGuests);");
+                        $success = $query->execute([
+                            ':lodgingId' => $_GET['id'],
+                            ':userId' => $_SESSION['auth']['id'],
+                            ':checkin' => $_POST['booking']['checkin'],
+                            ':checkout' => $_POST['booking']['checkout'],
+                            ':ngGuests' => $_POST['booking']['guests'],
+                        ]);
+
+                        if($success){
+                            // Si la requête a bien été effectuée
+
+                            // On sauvegarde un message de succès dans la session
+                            $_SESSION['info'] = 'Votre réservation a bien été ajoutée.';
+
+                            // Retour sur la page de gestion des réservations
+                            die( header('Location: my/bookings.php') );
+
+                        } else $error = 'Une erreur est survenue, veuillez rééssayer !';
+
+                    } else $error = "Le nombre de guests n'est pas valide, veuillez vérifier la capacité d'hébergement du logement !";
+
+                } else $error = "Les dates saisies ne sont pas valides !";
+
+            } else $error = "Tous les champs doivent être remplis.";
+
+        } else $error = "Le formulaire n'a pas été correctement validé.";
+
+    }
+
+    $title = 'Réserver ce logement';
+    require_once 'view/header.php';
+
+    // Si on a une erreur à afficher
+    if ( !empty($error) ) {
+        echo '<h2 style="color:red">'.$error.'</h2><hr>';
+    }
 
 ?>
 
@@ -40,10 +88,11 @@ if($query->rowCount() > 0){
 <hr>
 
 <form method="post">
-Réserver du <input type="text" name="booking[checkin]" id="checkin" /> au <input type="text" name="booking[checkout]" id="checkout" /> <input type="submit" value="Go !" />
+Réserver du <input type="text" name="booking[checkin]" id="checkin" /> au <input type="text" name="booking[checkout]" id="checkout" />
+<br />Nombre de guests : <input type="text" name="booking[guests]" /> <input type="submit" name="booking[submit]" value="Go !" />
 </form>
 <?php
-	require_once 'view/footer.php';
+    require_once 'view/footer.php';
 }
 else die( header('Location: ./') );
 ?>

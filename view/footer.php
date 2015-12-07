@@ -25,11 +25,17 @@ $(function(){
             num_next_month: 1,
             onSelectDate: function(date, month, year){
                 if(this.isAvailable(date, month, year)){
+                    var currentDate = new Date();
                     var selectedDate = new Date(year, month, date);
                     var $checkin = $("#checkin");
                     var $checkout = $("#checkout");
                     if($checkin.val() == ""){
-                        $checkin.val(year + '-' + month + '-' + date);
+                        if(selectedDate >= currentDate){
+                            $checkin.val(year + '-' + month + '-' + date);
+                        }
+                        else{
+                            alert("Erreur : La date de début de séjour doit être supérieur ou égale à la date d'aujourdhui !");
+                        }
                     }
                     else{
                         var previousInput = $checkin.val().split("-");
