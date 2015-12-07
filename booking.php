@@ -37,6 +37,11 @@ if($query->rowCount() > 0){
 
 <div id="calendar" data-toggle="calendar" ></div>
 
+<hr>
+
+<form method="post">
+Réserver du <input type="text" name="booking[checkin]" id="checkin" /> au <input type="text" name="booking[checkout]" id="checkout" /> <input type="submit" value="Go !" />
+</form>
 <?php
 	require_once 'view/footer.php';
 }

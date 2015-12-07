@@ -22,11 +22,27 @@ $(function(){
             day_first: 1,
             day_name: ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'],
             month_name: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
-            num_next_month: 2,
+            num_next_month: 1,
             onSelectDate: function(date, month, year){
-                alert([year, month, date].join('-') + ' is: ' + this.isAvailable(date, month, year));
+                if(this.isAvailable(date, month, year)){
+                    var selectedDate = new Date(year, month, date);
+                    var $checkin = $("#checkin");
+                    var $checkout = $("#checkout");
+                    if($checkin.val() == ""){
+                        $checkin.val(year + '-' + month + '-' + date);
+                    }
+                    else{
+                        var previousInput = $checkin.val().split("-");
+                        var previousDate = new Date(previousInput[0], previousInput[1], previousInput[2]);
+                        if(selectedDate >= previousDate){
+                            $checkout.val(year + '-' + month + '-' + date);
+                        }
+                        else{
+                            alert("Erreur : La date de fin de séjour doit être supérieur ou égale à la date de début !");
+                        }
+                    }
+                }
             },
-
         });
     }
 });
