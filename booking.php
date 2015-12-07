@@ -88,8 +88,9 @@ if($query->rowCount() > 0){
 <hr>
 
 <form method="post">
-Réserver du <input type="text" name="booking[checkin]" id="checkin" /> au <input type="text" name="booking[checkout]" id="checkout" />
-<br />Nombre de guests : <input type="text" name="booking[guests]" /> <input type="submit" name="booking[submit]" value="Go !" />
+Réserver du <input type="text" name="booking[checkin]" id="checkin" value="<?=!empty($_POST['booking']['checkin']) ? $_POST['booking']['checkin'] : ''?>" /> au
+<input type="text" name="booking[checkout]" id="checkout" value="<?=!empty($_POST['booking']['checkout']) ? $_POST['booking']['checkout'] : ''?>" />
+<br />Nombre de guests : <input type="text" name="booking[guests]" value="<?=!empty($_POST['booking']['guests']) ? $_POST['booking']['guests'] : ''?>" /> <input type="submit" name="booking[submit]" value="Go !" />
 </form>
 <?php
     require_once 'view/footer.php';

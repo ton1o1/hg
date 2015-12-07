@@ -1,7 +1,15 @@
-<script src="js/jquery.min.js"></script>
-<script type="text/javascript" src="js/dateTimePicker.min.js"></script>
+<script src="/hg/js/jquery.min.js"></script>
+<script type="text/javascript" src="/hg/js/dateTimePicker.min.js"></script>
 <script>
 $(function(){
+    function zeroFill(number)
+    {
+        if ( number.toString().length < 2 ){
+            return "0" + number;
+        }
+        else return number;
+    }
+
     $("#addPicture").on("mousedown", function(){
         var pictureCount = $("#pictureCount").val();
         if(pictureCount < 3){
@@ -31,7 +39,7 @@ $(function(){
                     var $checkout = $("#checkout");
                     if($checkin.val() == ""){
                         if(selectedDate >= currentDate){
-                            $checkin.val(year + '-' + month + '-' + date);
+                            $checkin.val(year + '-' + zeroFill(month) + '-' + zeroFill(date));
                         }
                         else{
                             alert("Erreur : La date de début de séjour doit être supérieur ou égale à la date d'aujourdhui !");
@@ -41,12 +49,15 @@ $(function(){
                         var previousInput = $checkin.val().split("-");
                         var previousDate = new Date(previousInput[0], previousInput[1], previousInput[2]);
                         if(selectedDate >= previousDate){
-                            $checkout.val(year + '-' + month + '-' + date);
+                            $checkout.val(year + '-' + zeroFill(month) + '-' + zeroFill(date));
                         }
                         else{
                             alert("Erreur : La date de fin de séjour doit être supérieur ou égale à la date de début !");
                         }
                     }
+                }
+                else{
+                    alert("Erreur : Le logement n'est pas disponible à cette date");
                 }
             },
         });

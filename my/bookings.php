@@ -34,7 +34,7 @@ if($query->rowCount() > 0){
 
 	foreach($bookings as $booking){
 
-	echo '<li>N°'.$booking['id'].' - Du '.$booking['checkin'].' au '.$booking['checkout'].'</li>';
+	echo '<li>N°'.$booking['id'].' - Du '.$booking['check_in'].' au '.$booking['check_out'].'</li>';
 
 	}
 

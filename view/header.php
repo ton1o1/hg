@@ -9,8 +9,8 @@ if (session_status() == PHP_SESSION_NONE) {
 <head>
     <title>H&G | <?=$title;?></title>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/dateTimePicker.css">
+    <link rel="stylesheet" href="/hg/css/style.css">
+    <link rel="stylesheet" href="/hg/css/dateTimePicker.css">
 </head>
 <body>
 <h1><?=$title;?></h1>
