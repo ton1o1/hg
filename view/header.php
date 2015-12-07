@@ -12,7 +12,7 @@ if (session_status() == PHP_SESSION_NONE) {
     <link rel="stylesheet" href="/hg/css/style.css">
     <link rel="stylesheet" href="/hg/css/dateTimePicker.css">
 </head>
-<body>
+<body style="padding:10px">
 <h1><?=$title;?></h1>
 <hr>
 <?php if(!empty($_SESSION['auth'])){
