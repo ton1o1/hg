@@ -1,9 +1,9 @@
 <?php
     // register.php
-    // v3.1
+    // v3.4
     // Changelog: 16:47 04/12/2015 : Ajout d'une étape de vérification d'utilisateur déjà enregistré avec le même email
     // Changelog: 15:25 04/12/2015 : Ajout d'une étape de validation d'email
-    // Changelog: 10:32 04/12/2015 : Ajout meta charset
+    // Changelog: 10:32 04/12/2015 : Ajout de meta charset
     // Changelog: 10:09 04/12/2015 : Ajout de la variable $error
 
     require_once 'inc/pdo.php';
@@ -11,6 +11,7 @@
 
     $error = "";
 
+    // Si la variable $_POST n'est pas vide
     if ( $_POST ) {
 
         // Quand le bouton submit est cliqué
@@ -26,14 +27,12 @@
                     if ( $_POST['register']['password'] == $_POST['register']['password_confirm'] ) {
 
                         // On vérifie qu'il n'existe pas déjà un utilisateur avec le même email dans la base
-                        $query = $pdo->prepare("SELECT COUNT(*) AS verif_email FROM user WHERE email = :email;");
-                        $query->execute([
+                        $statement = $pdo->prepare("SELECT COUNT(*) AS verif_email FROM user WHERE email = :email;");
+                        $statement->execute([
                             ':email' => $_POST['register']['email'],
                             ]);
-                        $result = $query->fetch();
+                        $result = $statement->fetch();
 
-                        // $_SESSION['info'] = $result['verif_email'];
-                        // die( header('Location: ./') );
                         if ( $result['verif_email'] == 0 ) {
 
                             // On rajoute l'utilisateur dans la base
@@ -41,7 +40,7 @@
                             $salt = keyGenerator();
                             try {
                                 // Mise à jour des données dans la base
-                                $statement = $pdo->prepare("INSERT INTO user VALUES ('', :password, :salt, :firstname, :lastname, :email, :phone);");
+                                $statement = $pdo->prepare("INSERT INTO user VALUES ('', :password, :salt, :token, :firstname, :lastname, :email, :phone);");
                                 $statement->execute([
 
                                     // Hashage et ajout du hash du mot de passe dans la base
@@ -49,6 +48,7 @@
 
                                     // Ajout du salt et des autres infos de l'utilisateur
                                     ':salt'      => $salt,
+                                    ':token'     => '',
                                     ':firstname' => $_POST['register']['firstname'],
                                     ':lastname'  => $_POST['register']['lastname'],
                                     ':email'     => $_POST['register']['email'],
@@ -87,7 +87,7 @@
     require_once './view/header.php';
 
     // Si on a une erreur à afficher
-    if ( !empty($error) ) {
+    if ( $error ) {
         echo '<h2 style="color:red">'.$error.'</h2>';
     }
 ?>

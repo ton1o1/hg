@@ -1,5 +1,6 @@
 <?php
-// v2.2
+// login.php
+// v2.5
 // Formulaire de connexion
 
 // Démarrage de la session
@@ -54,7 +55,7 @@ require_once './view/header.php';
 ?>
 
 <!-- Sous-menu -->
-<a href="lost_password.php">Mot de passe oublié ?</a>
+<a href="token.request.php">Mot de passe oublié ?</a>
 <hr>
 
 <?php
