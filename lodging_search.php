@@ -2,14 +2,40 @@
 
 <?php
 
-//faire une fonction permettant de lister tous les appartements présents dans la BDD
+include('inc/pdo.php');
 
-function build_html_flats( $flats )
+$statementCities = $pdo->prepare('SELECT city FROM lodging GROUP BY city ;' );
+$statementCities->execute(); 
+
+$allCities = $statementCities->fetchAll();
+
+function build_allCities( $cities )
 {
-	$flats_html ='';
+	$allCities_html ='';
+	
+	foreach ($cities as $city) 
+	{
+		$allCities_html .= sprintf(
+			'<p>%1$s</p>',
+			$city['city']
+		);
+	}
+	return $allCities_html;
+}
+
+$statementFlats = $pdo->prepare('	SELECT user.firstname, user.lastname, lodging.address, lodging.id 
+									FROM lodging JOIN user ON lodging.user_id = user.id ' );
+$statementFlats->execute(); 
+
+$allFlats = $statementFlats->fetchAll();
+
+function build_allFlats( $flats )
+{
+	$allFlats_html ='';
+	
 	foreach ($flats as $flat) 
 	{
-		$flats_html .= sprintf(
+		$allFlats_html .=sprintf(
 			'<section>
 				<div>
 					<a href="booking.php">
@@ -19,11 +45,9 @@ function build_html_flats( $flats )
 						<p>%3$s</p>
 					</a>
 				</div>
-				
 				<div>
-					<img src="pictures/%4$s/" alt="">
+					<img src="pictures/%4$s/%4$s.jpg" alt="">
 				</div>
-
 			</section>',
 			$flat['firstname'],
 			$flat['lastname'],
@@ -31,25 +55,38 @@ function build_html_flats( $flats )
 			$flat['id']
 		);
 	}
-	return $flats_html;
+	return $allFlats_html;
 }
 
-include('../inc/pdo.php');
-
-$statement = $pdo->prepare( 'SELECT user.firstname, user.lastname, lodging.address, lodging.id FROM lodging JOIN user ON lodging.user_id = user.id;' );
-$statement->execute();
-
-$statementFlat = $statement->fetchAll();
 ?>
+
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Home | GUEST</title>
+	<title>Home | Flats</title>
 	<link href="css/style.css" rel="stylesheet">
 </head>
 	<body>
+		<h2>Les villes où nous sommes présents : </h2>
+		
+		<?= build_allCities($allCities); ?>
 
-		<?= build_html_flats($statementFlat); ?>
+		<h2>Cherchez votre logement</h2>
+
+		<form action="#" method="GET" id="flats-form">
+			<input type="text" name="flatsForm" placeholder="Votre appartement">
+		</form>
+		
+
+		<div id="results">
+			
+			<?= build_allFlats($allFlats); ?>
+
+		</div>
+		
+
+	 	<script src="js/jquery.min.js"></script>
+		<script src="js/main.js"></script>
 
 	</body>
 </html>
