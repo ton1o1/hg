@@ -1,4 +1,8 @@
 <?php
+	// index.php 
+	// v1.1
+	// 10:12 17/12/2015
+	// hg
 
 $title = 'Accueil';
 require_once './view/header.php';
