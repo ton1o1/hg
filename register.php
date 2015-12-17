@@ -40,7 +40,7 @@
                             $salt = keyGenerator();
                             try {
                                 // Mise à jour des données dans la base
-                                $statement = $pdo->prepare("INSERT INTO user VALUES ('', :password, :salt, :token, :firstname, :lastname, :email, :phone);");
+                                $statement = $pdo->prepare("INSERT INTO user (password, salt, firstname, lastname, email, phone) VALUES (:password, :salt, :firstname, :lastname, :email, :phone);");
                                 $statement->execute([
 
                                     // Hashage et ajout du hash du mot de passe dans la base
@@ -48,7 +48,6 @@
 
                                     // Ajout du salt et des autres infos de l'utilisateur
                                     ':salt'      => $salt,
-                                    ':token'     => '',
                                     ':firstname' => $_POST['register']['firstname'],
                                     ':lastname'  => $_POST['register']['lastname'],
                                     ':email'     => $_POST['register']['email'],

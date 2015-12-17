@@ -17,6 +17,7 @@ if(!empty($_SESSION['info'])){ ?>
 // L'user est-il connecté ?
 if(!empty($_SESSION['auth'])){
 ?>
+<p>Vous êtes connecté en tant que : <?=$_SESSION['auth']['email']?></p>
 <ul>
 <li><a href="./lodging_search.php">Rechercher un logement</a></li>
 <li><a href="./my/bookings.php">Mes réservations</a></li>

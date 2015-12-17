@@ -1,27 +1,29 @@
 <?php
 	// token.request.php
 	// v2.5
-	// H&G
+	// 23:38 08/12/2015
+	// HG
 
 	$error = '';
 	$success = '';
 	$id = '';
 	$token = '';
-	require_once('inc/pdo.php');
 
-	// Si la variable $_POST n'est pas vide (il y a eu validation d'un formulaire)
+	require_once ('inc/pdo.php');
+
+	// Vérifie que la variable "$_POST" n'est pas vide (qu'il y a eu validation d'un formulaire)
 	if ( $_POST ) {
 
 		// Vérifie que le bouton submit à été cliqué
-		if ( !empty($_POST['action']['password']) ) {
+		if ( !empty($_POST['action']['submit']) ) {
 
 			// Vérifie que le champ email n'est pas vide
 			if ( !empty($_POST['user']['email'])  ) {
 
 				// Recherche de l'utilisateur correspondant à l'email de l'utilisateur
-				$statement = $pdo->prepare('SELECT * FROM user WHERE email = ?;');
-				$statement->execute([$_POST['user']['email']]);
-				$user = $statement->fetch();
+				$query = $pdo->prepare('SELECT * FROM user WHERE email = ?;');
+				$query->execute([ $_POST['user']['email'] ]);
+				$user = $query->fetch();
 
 				// Si l'utilisateur existe dans la base
 				if ( $user ) {
@@ -32,7 +34,7 @@
 					// On génere un token
 					$token = password_hash(uniqid(), PASSWORD_DEFAULT);
 
-					// Par sécurité utilise l'id de l'utilisateur et non son email qui serait visible dans la barre d'adresse (pas besoin de prepare, aucune donnée ne proviennent de l'utilisateur)
+					// Ici on utilise l'id de l'utilisateur plutôt que son email pour une raison de sécurité (pas besoin de prepare, aucune données ne proviennent de l'utilisateur)
 					$pdo->exec(sprintf(
 						'UPDATE user SET token = "%1$s" WHERE id = %2$u;',
 						$token,
@@ -40,24 +42,14 @@
 					));
 
 					// Envoie le lien de récupération de mot de passe à l'utilisateur par email
-					require_once('inc/PHPMailerAutoload.php');
-					$mail = new PHPMailer;
-					$mail->isSMTP();
-					$mail->Host     = 'smtp.gmail.com';
-					$mail->SMTPAuth = true;
-					$mail->Username = 'admin@email.com';
-					$mail->Password = 'admin';
-					$mail->Port     = 587;
-					$mail->setFrom('admin@email.com', 'H&G');
+					require_once ('cfg/smtp.php');
 					$mail->addAddress($user['email'], $user['email']);
-					$mail->isHTML(true);
-					$mail->CharSet  = 'UTF-8';
 					$mail->Subject  = "Récupération de mot de passe";
-					$mail->Body     = "Votre lien de récupération de mot de passe : <br/><a href='http://localhost/hg/reset.password.php?id=$id&token=$token'>http://localhost/hg/reset.password.php?id=$id&token$token</a>";
+					$mail->Body     = "Votre lien de récupération de mot de passe : <br /><a href='http://localhost/hg/reset.password.php?id=$id&token=$token'>http://localhost/hg/reset.password.php?id=$id&token$token</a>";
 					$mail->AltBody  = "Votre lien de récupération de mot de passe : \nhttp://localhost/hg/reset.password.php?id=$id&token=$token";
 
 					if ( !$mail->send() ) {
-					    $error = "Le mail de récupération de mot de passe n'a pas pu être envoyé.<br/>";
+					    $error = "Le mail de récupération de mot de passe n'a pas pu être envoyé.<br />";
 					    $error .= "Erreur: " . $mail->ErrorInfo;
 					} else $success = "Votre lien de récupération de mot de passe à bien été envoyé, vérifiez votre boite mail.";
 				} else $error = "Cet utilisateur n'existe pas.";
@@ -69,12 +61,15 @@
 	include('view/header.php');
 ?>
 
+<!-- Affichage des erreurs -->
+<?php if ($error) {?>
+	<section>
+		<h2 style="color: red;"><?=$error?></h2>
+	</section>
+<?php }?>
+
 <form action="token.request.php" method="post">
 
-	<!-- Affichage des erreurs -->
-	<?php if ($error) {?>
-			<h2 style="color: red;"><?=$error?></h2>
-	<?php }?>
 
 	<fieldset>
 		<!-- Formulaire de demande de token -->
@@ -84,13 +79,15 @@
 			name="user[email]"
 			value="<?=!empty($_POST['user']['email']) ? $_POST['user']['email'] : ''?>"
 		/>
-		<input type="submit" name="action[password]" value="Récupérer" />
+		<input type="submit" name="action[submit]" value="Récupérer" />
 	</fieldset>
 </form>
 
-<!-- Le mail de récupération de mot de passe à bien été envoyé  -->
+<!-- Le mail contenant le lien de récupération de mot de passe à bien été envoyé  -->
 <?php if ( $success ) { ?>
-	Votre lien de récupération de mot de passe à bien été envoyé, vérifiez votre boite mail.<br/>
+	<section>
+		<h2 style="color: green;">Votre lien de récupération de mot de passe à bien été envoyé, vérifiez votre boite mail.</h2>
+	</section>
 <?php } ?>
 
 <?php include('view/footer.php'); ?>
