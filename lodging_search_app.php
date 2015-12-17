@@ -1,53 +1,83 @@
 <?php
 
 include('inc/pdo.php');
+include_once('func/lodging_search.php');
 
-$flatsForm = $_GET['flatsForm'];
+//***************************************** DATA : pour build_allCities() *****************************************
+
+$statementCities = $pdo->prepare( 'SELECT city FROM lodging GROUP BY city ;' );
+$statementCities->execute(); 
+
+$cities = $statementCities->fetchAll();
+
+//************************************** DATA : pour le Build_allFlats/AJAX *****************************************
+$flatsForm ='';
+
+if (!empty($_GET))
+{
+	$flatsForm = $_GET['flatsForm'];
+}
+
+if ( !empty($_GET['page']) ) 
+{
+	$page = $_GET['page'];
+}
+else
+{
+	$page = 1;
+}
+
+$pageSize = 2;
+$offset = ( $page - 1 ) * $pageSize;
+
 
 if ( strlen($flatsForm) < 3 )
 {
-	$statement = $pdo->prepare('SELECT user.firstname, user.lastname, lodging.address, lodging.id 
-								FROM lodging JOIN user ON lodging.user_id = user.id ;' );
-
+	$statement = $pdo->prepare( sprintf (
+								'SELECT user.firstname, user.lastname, lodging.address, lodging.id 
+								FROM lodging JOIN user ON lodging.user_id = user.id
+								ORDER BY id DESC LIMIT %1$u, %2$u ;',
+								$offset,
+								$pageSize
+								));
 	$statement->execute(); 
 } 
 else
-{
-	$statement = $pdo->prepare('SELECT user.firstname, user.lastname, lodging.address, lodging.id 
+{	
+	$statement = $pdo->prepare( sprintf (
+								'SELECT user.firstname, user.lastname, lodging.address, lodging.id 
 								FROM lodging JOIN user ON lodging.user_id = user.id 
-								WHERE city LIKE :research ;' );
-
-	$statement->execute([ 
-		':research' => '%' . $flatsForm . '%'
-		]); 
-
+								WHERE city LIKE :research 
+								ORDER BY id DESC LIMIT %1$u, %2$u ;',
+								$offset,
+								$pageSize
+								));
+	$statement->execute([
+		':research' => '%' . $flatsForm . '%' 
+		]);
 }
 
 $flats = $statement->fetchAll();
 
-$flats_html ='';
+//************************************** DATA : pour le count *****************************************
 
-foreach ($flats as $flat) 
+
+$statementCount = $pdo->prepare(' SELECT COUNT(*) AS count FROM lodging; ');
+$statementCount->execute();
+
+$flatsCount = $statementCount->fetchAll();
+
+//***********************************************************************************************************
+
+if (!empty($_GET))
 {
-	$flats_html .= sprintf(
-		'<section>
-			<div>
-				<a href="booking.php">
-					<p>Appartement de %1$s</p>
-					<p>%1$s</p>
-					<p>%2$s</p>
-					<p>%3$s</p>
-				</a>
-			</div>
-			<div>
-				<img src="pictures/%4$s/%4$s.jpg" alt="">
-			</div>
-		</section>',
-		$flat['firstname'],
-		$flat['lastname'],
-		$flat['address'],
-		$flat['id']
-	);
+		echo build_allFlats($flats);
 }
-
-echo $flats_html;
+else
+{
+	return [
+		"cities" => $cities,
+		"flats" => $flats,
+		"total" => $flatsCount
+	];
+}
