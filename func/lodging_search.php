@@ -22,17 +22,17 @@ function build_allFlats( $flats )
 	{
 		$allFlats_html .=sprintf(
 			'<section>
-				<div>
-					<a href="booking.php">
+				<a href="booking.php?id=%4$s">
+					<div>
 						<p>Appartement de %1$s</p>
 						<p>%1$s</p>
 						<p>%2$s</p>
 						<p>%3$s</p>
-					</a>
-				</div>
-				<div>
-					<img src="pictures/%4$s/%4$s.jpg" alt="">
-				</div>
+					</div>
+					<div>
+						<img src="pictures/%4$s/0.jpg" alt="Appartement situé au %3$s">
+					</div>
+				</a>
 			</section>',
 			$flat['firstname'],
 			$flat['lastname'],

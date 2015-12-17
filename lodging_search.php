@@ -28,20 +28,6 @@
 
 		</div>
 
-	<?php if ( $page > 1 ) { ?>
-
-	<a href="lodging_search.php?page=<?=$page - 1?>">
-	<button type="button">previous</button></a>
-
-	<?php } ?>
-
-
-	<?php if ( $page * $pageSize < $results['total'] ) { ?>
-
-	<a href="lodging_search.php?page=<?=$page + 1?>">
-	<button type="button">next</button></a>
-
-		<?php } ?>
 	 	<script src="js/jquery.min.js"></script>
 		<script src="js/main.js"></script>
 

@@ -67,9 +67,6 @@ $statementCount->execute();
 
 $flatsCount = $statementCount->fetchAll();
 
-// echo"<pre>";
-// print_r($flatsCount);
-
 //***********************************************************************************************************
 
 if (!empty($_GET))
